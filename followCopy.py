@@ -38,7 +38,7 @@ with open("alreadyFollowed.txt", "a+") as followedFile:
 	banned = []
 	alreadyRequested = []
 
-	for user in tweepy.Cursor(api.friends, screen_name=userToCopy).items():
+	for user in tweepy.Cursor(api.friends, screen_name=user_to_copy).items():
 		if user.id not in followedUsers:
 			print('{0} User: {1} - Id: {2} - Protected: {3}'.format(i, user.screen_name, user.id, user.protected))
 			i += 1
