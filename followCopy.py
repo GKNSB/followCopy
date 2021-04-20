@@ -39,7 +39,7 @@ with open("alreadyFollowed.txt", "a+") as followedFile:
 	alreadyRequested = []
 
 	for user in tweepy.Cursor(api.friends, screen_name=user_to_copy).items():
-		if user.id not in followedUsers:
+		if str(user.id) not in followedUsers:
 			print('{0} User: {1} - Id: {2} - Protected: {3}'.format(i, user.screen_name, user.id, user.protected))
 			i += 1
 
@@ -70,7 +70,7 @@ with open("alreadyFollowed.txt", "a+") as followedFile:
 							pass
 
 		else:
-			pass
+			print("[x] Skipping user {0}".format(user.screen_name))
 
 print("[{0}] -- Already requested users: -- ".format(datetime.now().strftime("%d/%m/%Y %H:%M:%S")))
 for user in alreadyRequested:
