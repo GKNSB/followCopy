@@ -40,9 +40,7 @@ with open("alreadyFollowed.txt", "a+") as followedFile:
 
 	for user in tweepy.Cursor(api.friends, screen_name=user_to_copy).items():
 		if str(user.id) not in followedUsers:
-			print('{0} User: {1} - Id: {2} - Protected: {3}'.format(i, user.screen_name, user.id, user.protected))
 			i += 1
-
 			mustretry = True
 			sleepinc = 0
 
@@ -51,15 +49,18 @@ with open("alreadyFollowed.txt", "a+") as followedFile:
 					api.create_friendship(user.id)
 					followedFile.write("\n{0}".format(str(user.id)))
 					mustretry = False
+					print('[s] {0} User: {1} - Id: {2} - Protected: {3}'.format(i, user.screen_name, user.id, user.protected))
 
 				except tweepy.error.TweepError as err:
 					if int(err.args[0][0]['code']) == 106 or int(err.args[0][0]['code']) == 162:
 						mustretry = False
 						banned.append(user)
+						print('[b] {0} User: {1} - Id: {2} - Protected: {3}'.format(i, user.screen_name, user.id, user.protected))
 
 					elif int(err.args[0][0]['code']) == 160:
 						mustretry = False
 						alreadyRequested.append(user)
+						print('[r] {0} User: {1} - Id: {2} - Protected: {3}'.format(i, user.screen_name, user.id, user.protected))
 
 					else:
 						print("    [{0}] {1}... Will retry after {2} minutes.".format(datetime.now().strftime("%d/%m/%Y %H:%M:%S"), err, 2**sleepinc))
